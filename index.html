@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Girl</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: red;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            overflow: hidden;
+            position: relative;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .message {
+            position: absolute;
+            text-align: center;
+            z-index: 1;
+            font-size: 3em;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .angel {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://cdn.iconscout.com/icon/free/png-256/angel-1750888-1485518.png'); /* Angel image */
+            background-size: cover;
+            animation: fly 10s linear infinite;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-200px) translateX(300px);
+            }
+            100% {
+                transform: translateY(0) translateX(600px);
+            }
+        }
+
+        /* Fireworks styles */
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1s ease-in-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video id="cameraStream" autoplay></video>
+    <div class="message">You are the most beautiful girl in the world, Mani!</div>
+
+    <script>
+        const video = document.getElementById('cameraStream');
+
+        // Request access to the user's camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(error => {
+            console.error("Camera access denied or unavailable", error);
+            document.querySelector('.message').textContent = "Unable to access camera.";
+        });
+
+        // Function to create flying angels
+        function createAngel() {
+            const angel = document.createElement('div');
+            angel.classList.add('angel');
+            angel.style.left = '-50px'; // Start off-screen
+            angel.style.top = Math.random() * 100 + 'vh'; // Random vertical position
+
+            document.body.appendChild(angel);
+
+            // Remove angel after animation
+            setTimeout(() => {
+                angel.remove();
+            }, 10000); // Match with the duration of the fly animation
+        }
+
+        // Function to create fireworks
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            firework.style.width = Math.random() * 20 + 10 + 'px';
+            firework.style.height = firework.style.width;
+            firework.style.backgroundColor = 'white'; // Random colors could be added here
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(firework);
+
+            // Animation and remove
+            firework.style.animation = `explode ${Math.random() * 1 + 0.5}s ease-in-out forwards`;
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+
+        // Create angels at intervals
+        setInterval(createAngel, 2000);
+        // Create fireworks at intervals
+        setInterval(createFirework, 1000);
+    </script>
+</body>
+</html>
+
